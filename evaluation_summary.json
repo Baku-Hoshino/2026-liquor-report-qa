@@ -1,0 +1,15 @@
+{
+  "questions": 10,
+  "panorama_questions": 2,
+  "recall_sufficient": 10,
+  "answer_correct": 8,
+  "answerable_questions_correct": 8,
+  "answerable_questions": 9,
+  "scope_refusal_correct": false,
+  "ungraded_record_sha256": "b428840d0e85192401db41727de87df054ced9a369dadf85bc5b96890a07fd4f",
+  "partial_correct": 1,
+  "failed": 1,
+  "manual_review_completed": true,
+  "fixed_question_set": true,
+  "note": "8/10完整正确，1题部分正确，1题失败；在9道有明确答案的题中8道正确。召回10/10按已读证据义务核对，不代表一般检索召回率。"
+}

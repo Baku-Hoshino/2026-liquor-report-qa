@@ -1,4 +1,9 @@
-pypdf>=6.0,<7
-pdfplumber>=0.11,<1
-numpy>=2.0,<3
-
+numpy==2.5.4
+pdfplumber==0.11.10
+pypdf==6.20.0
+reportlab==5.0.1
+pillow==12.3.0
+torch==2.14.1
+transformers==5.19.0
+huggingface-hub==1.33.0
+mlx-lm==0.32.0

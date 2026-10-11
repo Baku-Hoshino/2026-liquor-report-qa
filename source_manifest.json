@@ -1,0 +1,82 @@
+[
+  {
+    "code": "600519",
+    "company": "贵州茅台",
+    "url": "https://static.cninfo.com.cn/finalpage/2026-08-15/1225475868.PDF",
+    "sha256": "0e10aa26be46b1cf3cd03f06e834c7fb98d5dd0d661b96f8fddd4af7e846a4f6",
+    "pages": 110,
+    "chunks": 1682
+  },
+  {
+    "code": "000858",
+    "company": "五粮液",
+    "url": "https://static.cninfo.com.cn/finalpage/2026-08-29/1225531252.PDF",
+    "sha256": "15153679faee48d1b1b00c50557a88bdcbdf8cb4cbc49b8762e10f70210dfb5b",
+    "pages": 124,
+    "chunks": 1933
+  },
+  {
+    "code": "000568",
+    "company": "泸州老窖",
+    "url": "https://static.cninfo.com.cn/finalpage/2026-08-26/1225501255.PDF",
+    "sha256": "33fbc65e9bc5c41a80d2cc5f8ae0eaa2990424c81bb93b90029ccdb05e092ade",
+    "pages": 141,
+    "chunks": 1630
+  },
+  {
+    "code": "600809",
+    "company": "山西汾酒",
+    "url": "https://static.cninfo.com.cn/finalpage/2026-08-31/1225535289.PDF",
+    "sha256": "37882889a80a9cbc09f5df575da4c7fe95f34b7876e77aea84fa22e18ed03f94",
+    "pages": 132,
+    "chunks": 1321
+  },
+  {
+    "code": "002304",
+    "company": "洋河股份",
+    "url": "https://static.cninfo.com.cn/finalpage/2026-08-27/1225510381.PDF",
+    "sha256": "1734c5e0be0dfe79fabac2210255f3dd91bb86d81e31f9495879826f0aa1289f",
+    "pages": 132,
+    "chunks": 1469
+  },
+  {
+    "code": "000596",
+    "company": "古井贡酒",
+    "url": "https://static.cninfo.com.cn/finalpage/2026-08-29/1225524329.PDF",
+    "sha256": "f5b96848a198d372f33a2d74198d87cb3baa2d93517b6e4ba4b88b85a7a60df9",
+    "pages": 142,
+    "chunks": 1577
+  },
+  {
+    "code": "603369",
+    "company": "今世缘",
+    "url": "https://static.cninfo.com.cn/finalpage/2026-08-18/1225476449.PDF",
+    "sha256": "5294b333a771789c7165dff7c3630626db7cca9786383315298f8239cd714340",
+    "pages": 119,
+    "chunks": 1332
+  },
+  {
+    "code": "600702",
+    "company": "舍得酒业",
+    "url": "https://static.cninfo.com.cn/finalpage/2026-08-19/1225479546.PDF",
+    "sha256": "86e714852724ad62b1fa9f2e0e13631b64420051c56219bd7f2b1c7de8df2081",
+    "pages": 148,
+    "chunks": 1527
+  },
+  {
+    "code": "000799",
+    "company": "酒鬼酒",
+    "url": "https://static.cninfo.com.cn/finalpage/2026-08-25/1225496014.PDF",
+    "sha256": "cc03e76561d2ae77d386d7a84618d16433d12193d0a3a035d29b41a7bb43460a",
+    "pages": 118,
+    "chunks": 1329
+  },
+  {
+    "code": "603589",
+    "company": "口子窖",
+    "url": "https://static.cninfo.com.cn/finalpage/2026-08-28/1225518242.PDF",
+    "sha256": "88bf15a750cf267de35697cae4d13c7071cd847f3314e10062e8013c5b2b1ed9",
+    "pages": 184,
+    "chunks": 1153
+  }
+]

@@ -1,78 +1,49 @@
-"""Render the one-page assignment conclusion as a PDF."""
+"""Create a one-page conclusion from the saved, actually measured evaluation."""
+import json,re
 from pathlib import Path
-
 from reportlab.lib.colors import HexColor
 from reportlab.lib.pagesizes import A4
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
+from reportlab.pdfbase.cidfonts import UnicodeCIDFont
 from reportlab.pdfgen import canvas
-
-HERE = Path(__file__).resolve().parent
-OUT = HERE / "conclusion.pdf"
-pdfmetrics.registerFont(TTFont("Heiti", "/System/Library/Fonts/STHeiti Medium.ttc", subfontIndex=0))
-pdfmetrics.registerFont(TTFont("Songti", "/System/Library/Fonts/Supplemental/Songti.ttc", subfontIndex=0))
-W, H = A4
-INK = HexColor("#173735")
-TEAL = HexColor("#186C65")
-MUTED = HexColor("#657A76")
-PAPER = HexColor("#F8F7F1")
-LINE = HexColor("#D9E2DD")
-ORANGE = HexColor("#D78C39")
-
-
-def text(c, x, y, value, size=10, font="Heiti", color=INK):
-    c.setFont(font, size); c.setFillColor(color); c.drawString(x, y, value)
-
-
-def wrap(c, x, y, value, width, size=10, leading=17, color=INK):
-    line = ""
-    for ch in value:
-        if pdfmetrics.stringWidth(line + ch, "Heiti", size) > width and line:
-            text(c, x, y, line, size, color=color); y -= leading; line = ""
-        line += ch
-    if line:
-        text(c, x, y, line, size, color=color); y -= leading
-    return y
-
-
-def section(c, y, no, title, body, height):
-    c.setFillColor(HexColor("#FFFFFF")); c.roundRect(42, y-height, W-84, height, 9, fill=1, stroke=0)
-    c.setFillColor(TEAL); c.roundRect(56, y-38, 30, 25, 5, fill=1, stroke=0)
-    text(c, 63, y-30, no, 10, color=HexColor("#FFFFFF"))
-    text(c, 99, y-31, title, 13)
-    wrap(c, 56, y-59, body, W-112, 9.5, 16)
-    return y-height-12
-
-
+ROOT=Path(__file__).resolve().parent
+font='/System/Library/Fonts/STHeiti Medium.ttc'
+if Path(font).exists():pdfmetrics.registerFont(TTFont('Chinese',font,subfontIndex=0))
+else:pdfmetrics.registerFont(UnicodeCIDFont('STSong-Light'));font=None
+FONT='Chinese' if font else 'STSong-Light'
+W,H=A4;INK=HexColor('#203733');GREEN=HexColor('#176753');MUTED=HexColor('#65766c')
+def text(c,x,y,s,size=10,color=INK):
+ c.setFont(FONT,size);c.setFillColor(color);c.drawString(x,y,s)
+def wrap(c,x,y,s,width,size=10,leading=16):
+ line=''
+ for ch in re.findall(r'[A-Za-z0-9][A-Za-z0-9.,%/+-]*|.',s):
+  if pdfmetrics.stringWidth(line+ch,FONT,size)>width and line:text(c,x,y,line,size);y-=leading;line=''
+  line+=ch
+ if line:text(c,x,y,line,size);y-=leading
+ return y
 def main():
-    c = canvas.Canvas(str(OUT), pagesize=A4)
-    c.setTitle("2026 白酒半年报问答库｜一页结论")
-    c.setAuthor("课程作业 3 · 方向 A")
-    c.setFillColor(PAPER); c.rect(0, 0, W, H, fill=1, stroke=0)
-    c.setFillColor(INK); c.rect(0, H-179, W, 179, fill=1, stroke=0)
-    text(c, 42, H-44, "MF70050.01  人工智能与数据分析  /  作业 3", 9, color=HexColor("#B9D8CF"))
-    text(c, 42, H-91, "同一批财报，什么问题适合建库？", 22, "Songti", HexColor("#FFFFFF"))
-    text(c, 42, H-121, "方向 A · 10 家 A 股白酒公司 2026 年半年报全文", 11, color=HexColor("#D9ECE6"))
-    c.setFillColor(ORANGE); c.circle(W-55, H-92, 7, fill=1, stroke=0)
-
-    y = H-210
-    text(c, 42, y, "10", 33, color=TEAL); text(c, 101, y+5, "份官方半年报", 10, color=MUTED)
-    text(c, 227, y, "18,224", 33, color=TEAL); text(c, 350, y+5, "个带出处的块", 10, color=MUTED)
-    c.setStrokeColor(LINE); c.line(42, y-16, W-42, y-16)
-    y -= 42
-    y = section(c, y, "01", "怎么做", "下载 10 份半年报全文，逐页抽取文字、恢复表格；每块保留公司、章节和 PDF 页码。向量与 BM25 混合检索，答案直链原报告。", 105)
-    y = section(c, y, "02", "真实测试", "固定 10 题：8 道单公司题、2 道跨公司全景题。9/10 题的首条证据包含人工核对的目标值或关键文字；两道全景题各覆盖 10 家公司、对应本期指标行。逐题召回块 ID、页码、判定与错误记录见仓库 evaluation.md。", 105)
-    y = section(c, y, "03", "哪里有效", "营业收入、归母净利润、经营现金流等可在报表中明确定位的事实题表现最好。跨公司同一指标的资料收集也适合建库：数据随报告更新，引用页码可追溯；比较时仍须统一口径与单位。", 88)
-    y = section(c, y, "04", "哪里翻车", "“古井贡酒研发投入是多少”只召回第 38 页的“研发费用”34,920,057.51 元。研发费用不能直接等于研发投入，系统仍把它排在首位。下一步应加指标别名与口径校验，并在证据不足时明确拒答。", 89)
-
-    c.setFillColor(HexColor("#E8F0EB")); c.roundRect(42, 61, W-84, 57, 9, fill=1, stroke=0)
-    text(c, 56, 98, "结论", 10, color=TEAL)
-    wrap(c, 56, 80, "同一批财报，更新频繁且必须核对出处的事实问答适合建库；微调更适合学习稳定的董秘答复口径，不能替代财务数字的检索与引用。", W-112, 9.8, 15)
-    text(c, 42, 38, "数据：巨潮资讯披露的 2026 年半年度报告全文 · 2026-09-23", 8, color=MUTED)
-    text(c, W-87, 38, "01 / 01", 8, color=MUTED)
-    c.save()
-    print(OUT)
-
-
-if __name__ == "__main__":
-    main()
+ summary=json.loads((ROOT/'evaluation_summary.json').read_text())
+ c=canvas.Canvas(str(ROOT/'conclusion.pdf'),pagesize=A4);c.setTitle('作业3｜白酒半年报问答库修订结论')
+ c.setFillColor(HexColor('#f6f7f2'));c.rect(0,0,W,H,fill=1,stroke=0)
+ text(c,42,H-42,'人工智能与数据分析 · 作业3 · 方向A · 2026-10-11',9,MUTED)
+ text(c,42,H-80,'找到证据以后，答案仍要逐项核对',21)
+ y=H-111;y=wrap(c,42,y,'10家白酒上市公司 · 2026年半年度报告全文 · BGE语义嵌入 + BM25 + 本地Qwen2.5-7B',W-84,10,16)
+ c.setFillColor(HexColor('#e4eee6'));c.roundRect(42,y-78,W-84,65,7,fill=1,stroke=0)
+ text(c,56,y-35,f'证据义务满足：{summary["recall_sufficient"]}/10',12,GREEN)
+ text(c,300,y-35,f'完整正确答案：{summary["answer_correct"]}/10',12,GREEN)
+ text(c,56,y-59,'另有1题部分正确、1题失败；9道有明确答案的题中8道正确。',9,MUTED)
+ y-=102
+ sections=[
+ ('本次补了什么','恢复表格本期、上期及同比列，保留公司、章节、单位与PDF页码；全景题按10家公司分别取证。使用真实嵌入模型与回答模型，提交代码仓库、页面截图和10题实际输出。原始生成、引用、全部已读块和逐题判定均可在仓库复核。'),
+ ('哪类题答得好','单公司明确财务指标题和销售模式题核对通过；营收全景题输出10家公司本期收入，金额、单位和各自出处均一致。对这10题，所需材料全部读到，但这只是证据义务核对，不能称为模型答案准确率。'),
+ ('哪类题翻车，为什么','研发投入题未把研发费用当投入，但未充分解释口径，判部分正确。古井合并研发费用34,920,057.51元（PDF第38、118页）与母公司14,176,456.49元（第40页）不能直接证明投入总额。归母净利润全景题已读到10家公司证据，仍把茅台44,516,880,421.86元抄成4,451,688,042.18元，并生成无效引用；错误被拦截，此题仍计失败。'),
+ ('改进后的结果与限制','首轮实际答案仅4/10完整正确，保留失败记录后，修正提示词和取证范围，再测为8/10完整正确。题集已参与调试，不能当作未知题泛化成绩。14,953块中仍有2,902个复杂表格行的表头未可靠恢复，已标记并排除出最终表格证据；本次使用的财务摘要行逐项核对原页。'),
+ ('结论','数字更新频繁、需要出处的财报事实问答适合建库；微调更适合稳定格式。可靠回答还要区分费用与投入、本期与上期、合并与母公司，并校验实际答案。下一步优先改善长答案的复制与引用一致性，而不是把检索命中冒充回答正确。')]
+ for title,body in sections:
+  text(c,42,y,title,12,GREEN);y-=22;y=wrap(c,42,y,body,W-84,10.5,17);y-=15
+ assert y>60, y
+ text(c,42,47,'复核入口：github.com/Baku-Hoshino/2026-liquor-report-qa · evaluation.md',8.5,MUTED)
+ c.linkURL('https://github.com/Baku-Hoshino/2026-liquor-report-qa', (42,44,W-42,60),relative=0)
+ text(c,W-85,27,'1 / 1',8,MUTED);c.save();print('one-page conclusion generated, remaining y=',y)
+if __name__=='__main__':main()

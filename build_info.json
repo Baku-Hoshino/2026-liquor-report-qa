@@ -1,0 +1,11 @@
+{
+  "embedding_model": "BAAI/bge-small-zh-v1.5",
+  "dimensions": 512,
+  "chunks": 14953,
+  "index_seconds": 46.85,
+  "device": "mps",
+  "bm25": "SQLite FTS5",
+  "text_blocks": 2588,
+  "table_rows": 12365,
+  "headers_unresolved": 2902
+}
