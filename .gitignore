@@ -1,5 +1,10 @@
 .env
+.env.*
+.venv/
+models/
 reports/
 data/
+work/
 __pycache__/
 .DS_Store
+*.log
