@@ -1,0 +1,10 @@
+{
+  "questions": 10,
+  "panorama_questions": 2,
+  "recall_sufficient": 10,
+  "answer_correct": 4,
+  "answerable_questions_correct": 4,
+  "answerable_questions": 9,
+  "scope_refusal_correct": false,
+  "ungraded_record_sha256": "2d6e56bfec2d8132563665825492669b46099114a50591c7f317b2f074f795e1"
+}
